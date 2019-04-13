@@ -86,5 +86,10 @@ add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}.c
 target_link_libraries(${PROJECT_NAME} ${LIBRARIES})
 
 ################################################################################
+# Create test executable.
+add_executable(${PROJECT_NAME}-test ${CMAKE_CURRENT_SOURCE_DIR}/src/${PROJECT_NAME}-test.cpp ${CMAKE_BINARY_DIR}/cluon-complete.hpp)
+target_link_libraries(${PROJECT_NAME}-test ${LIBRARIES})
+
+################################################################################
 # Install executable.
 install(TARGETS ${PROJECT_NAME} DESTINATION bin COMPONENT ${PROJECT_NAME})
