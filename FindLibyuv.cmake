@@ -15,9 +15,11 @@
 
 ###########################################################################
 # Find libyuv.
+SET(LIBYUVDIR /opt/dm/libyuv)
 FIND_PATH(YUV_INCLUDE_DIR
           NAMES libyuv.h
-          PATHS /usr/local/include/
+          PATHS ${LIBYUVDIR}/include/
+                /usr/local/include/
                 /usr/include/)
 MARK_AS_ADVANCED(YUV_INCLUDE_DIR)
 FIND_LIBRARY(YUV_LIBRARY

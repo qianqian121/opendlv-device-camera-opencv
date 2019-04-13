@@ -1,3 +1,5 @@
+./opendlv-device-camera-opencv --camera=/mnt/home/dev/Videos/video_15frames_30fps.avi --freq=30 --width=640 --height=480 --verbose
+
 ## OpenDLV Microservice to interface with OpenCV-encapsulated cameras
 
 This repository provides source code to interface OpenCV-encapsulated cameras

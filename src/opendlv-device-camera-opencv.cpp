@@ -50,8 +50,8 @@ int32_t main(int32_t argc, char **argv) {
         const std::string CAMERA{commandlineArguments["camera"]};
         const std::string NAME_I420{(commandlineArguments["name.i420"].size() != 0) ? commandlineArguments["name.i420"] : "video0.i420"};
         const std::string NAME_ARGB{(commandlineArguments["name.argb"].size() != 0) ? commandlineArguments["name.argb"] : "video0.argb"};
-        const uint32_t WIDTH{static_cast<uint32_t>(std::stoi(commandlineArguments["width"]))};
-        const uint32_t HEIGHT{static_cast<uint32_t>(std::stoi(commandlineArguments["height"]))};
+//        const uint32_t WIDTH{static_cast<uint32_t>(std::stoi(commandlineArguments["width"]))};
+//        const uint32_t HEIGHT{static_cast<uint32_t>(std::stoi(commandlineArguments["height"]))};
         const float FREQ{static_cast<float>(std::stof(commandlineArguments["freq"]))};
         if ( !(FREQ > 0) ) {
             std::cerr << "[opendlv-device-camera-opencv]: freq must be larger than 0; found " << FREQ << "." << std::endl;
@@ -61,21 +61,24 @@ int32_t main(int32_t argc, char **argv) {
         const bool VERBOSE{commandlineArguments.count("verbose") != 0};
         const bool IS_YUYV422{commandlineArguments.count("yuyv422") != 0};
 
-        cv::VideoCapture capture(CAMERA);
+        cv::VideoCapture capture;
+        capture.open(CAMERA);
         if (capture.isOpened()) {
-            capture.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
-            capture.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
-            capture.set(CV_CAP_PROP_FPS, static_cast<uint32_t>(FREQ));
-
-            // Avoid using OpenCV for tranforming incoming frame to RGB as this is expensive.
-            if (IS_YUYV422) {
-                capture.set(CV_CAP_PROP_CONVERT_RGB, false);
-            }
+//            capture.set(CV_CAP_PROP_FRAME_WIDTH, WIDTH);
+//            capture.set(CV_CAP_PROP_FRAME_HEIGHT, HEIGHT);
+//            capture.set(CV_CAP_PROP_FPS, static_cast<uint32_t>(FREQ));
+//
+//            // Avoid using OpenCV for tranforming incoming frame to RGB as this is expensive.
+//            if (IS_YUYV422) {
+//                capture.set(CV_CAP_PROP_CONVERT_RGB, false);
+//            }
         }
         else {
             std::cerr << argv[0] << "Could not open camera '" << CAMERA << "'" << std::endl;
             return retCode;
         }
+        const uint32_t WIDTH = (uint32_t)capture.get(CV_CAP_PROP_FRAME_WIDTH);
+        const uint32_t HEIGHT = (uint32_t)capture.get(CV_CAP_PROP_FRAME_HEIGHT);
 
         std::unique_ptr<cluon::SharedMemory> sharedMemoryI420(new cluon::SharedMemory{NAME_I420, WIDTH * HEIGHT * 3/2});
         if (!sharedMemoryI420 || !sharedMemoryI420->valid()) {
